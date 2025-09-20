@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advertising 3020 Interactive Study Guide</title>
+    <title>Advertising 3020 Full Study Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Harmony (Warm Neutrals with Teal Accent) -->
-    <!-- Application Structure Plan: A single-page application with a sticky top navigation bar for the four main topics (Creativity, Brief, Copywriting, Media). This non-linear structure allows users to jump to specific revision topics easily. Each topic is presented in its own section, using interactive elements like click-to-reveal cards, accordions, and tabs to organize information, reduce cognitive load, and make the learning process more engaging than a simple text document. -->
-    <!-- Visualization & Content Choices: The 5-stage creative process is an interactive step-by-step reveal (Goal: Organize, Method: HTML/JS click-reveal). The Creative Brief components use an accordion (Goal: Organize, Method: HTML/JS accordion). Maslow's Hierarchy is a visual, clickable pyramid (Goal: Visualize, Method: HTML/CSS styled divs with JS interaction). Media types are organized into a tabbed interface (Goal: Compare/Organize, Method: HTML/JS tabs). No charts are needed as the data is qualitative. These choices prioritize user interaction and clarity over static text. -->
+    <!-- Application Structure Plan: The SPA structure is expanded into a full study guide. The top-level navigation (Creativity, Brief, Copywriting, Media) remains for broad topic selection. Each main section now contains its own sub-navigation tab system. This nested structure allows for a deep dive into specific concepts (e.g., "The 5 Stages" or "TV Ad Formats") without overwhelming the user. This hierarchical organization transforms the initial cram sheet into a comprehensive, self-contained learning tool, prioritizing depth and clarity. -->
+    <!-- Visualization & Content Choices: The application now uses nested tabs to structure detailed notes from the source PDFs. Interactive elements like the clickable 5-stage process, accordions for brief components, and the Maslow's pyramid are retained but placed within this more granular structure. This enhances usability by breaking down large volumes of text into manageable, topic-specific chunks, making study sessions more focused and effective. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -26,15 +26,23 @@
             color: #0D9488; /* Teal Accent */
             border-bottom-color: #0D9488;
         }
-        .content-section {
+        .content-section, .sub-content-pane {
             display: none;
         }
-        .content-section.active {
+        .content-section.active, .sub-content-pane.active {
             display: block;
         }
         .tab-link.active {
             background-color: #0D9488;
             color: white;
+        }
+        .sub-nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .sub-nav-link.active {
+            color: #0D9488;
+            border-color: #0D9488;
+            background-color: #F0FDF4;
         }
         .accordion-content {
             max-height: 0;
@@ -61,14 +69,21 @@
             padding-bottom: 8px;
             font-weight: 600;
         }
+        .prose ul {
+            list-style-position: inside;
+        }
+        .prose li {
+            margin-left: 1rem;
+            list-style-type: disc;
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-10 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <h1 class="text-2xl font-bold text-teal-700">Advertising 3020 Exam Cram</h1>
+                <h1 class="text-2xl font-bold text-teal-700">Advertising 3020 Study Guide</h1>
                 <nav id="main-nav" class="hidden md:flex space-x-8">
                     <a data-target="creativity" class="nav-link active font-semibold border-b-2 border-transparent pb-1">Creativity</a>
                     <a data-target="brief" class="nav-link font-semibold border-b-2 border-transparent pb-1">Creative Brief</a>
@@ -79,161 +94,128 @@
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         <!-- Section 1: Creativity -->
         <section id="creativity" class="content-section active">
-            <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
                 <h2 class="text-3xl font-bold text-gray-800 mb-2">The Core of an Idea: Creativity in Advertising</h2>
-                <p class="text-lg text-gray-600 mb-8">This section covers the definition of creativity in an advertising context and the structured process that brings great ideas to life.</p>
-                
-                <article class="mb-10">
-                    <h3 class="text-2xl font-semibold text-teal-700 mb-3">Defining Creativity</h3>
-                    <p class="text-gray-700 leading-relaxed">Creativity in advertising is the act of turning new and imaginative ideas into a reality that is both **novel** (new/original) and **appropriate** (useful/solves the client's problem). It involves finding hidden patterns and making fresh connections. An idea without action is just imagination. Key behaviours of innovators include Associating, Questioning, Observing, Networking, and Experimenting.</p>
-                </article>
-
-                <article>
-                    <h3 class="text-2xl font-semibold text-teal-700 mb-4">The 5-Stage Creative Process</h3>
-                    <div id="creative-process-nav" class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
-                        <div data-target="prep" class="creative-stage active text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50">
-                            <span class="text-4xl">1</span>
-                            <p class="font-semibold mt-2">Preparation</p>
+                <p class="text-lg text-gray-600 mb-6">Explore the definition of creativity, the process for generating ideas, and the principles of innovative thinking.</p>
+                <div class="flex border-b border-gray-200 sub-nav-container">
+                    <button data-target="creativity-def" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Defining Creativity</button>
+                    <button data-target="creativity-process" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">The Creative Process</button>
+                    <button data-target="creativity-innovation" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Innovation & Thinking</button>
+                </div>
+                <div class="py-6 prose max-w-none">
+                    <div id="creativity-def" class="sub-content-pane active">
+                        <h3 class="text-xl font-semibold text-teal-700 mb-3">What is Creativity?</h3>
+                        <p>Creativity is the act of turning new and imaginative ideas into reality. It is characterized by the ability to perceive the world in new ways, to find hidden patterns, and to make connections between seemingly unrelated phenomena. Critically for advertising, a product is creative when it is both **(a) novel** and **(b) appropriate**. A novel product is original and not predictable. An appropriate product is useful and serves the client's objective.</p>
+                        <p>Creativity involves two processes: thinking, then producing. If you have ideas but don't act on them, you are imaginative but not creative. Everyone has "everyday creativity," and it is a skill that can be developed, not an innate talent.</p>
+                    </div>
+                    <div id="creativity-process" class="sub-content-pane">
+                         <h3 class="text-xl font-semibold text-teal-700 mb-4">The 5-Stage Creative Process</h3>
+                         <p class="mb-4">This is the evolution of an idea into its final form, first articulated by Graham Wallas. Click on a stage to see the details.</p>
+                         <div id="creative-process-nav" class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
+                            <div data-target="prep" class="creative-stage active text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">1</span><p class="font-semibold mt-2">Preparation</p></div>
+                            <div data-target="incub" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">2</span><p class="font-semibold mt-2">Incubation</p></div>
+                            <div data-target="illum" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">3</span><p class="font-semibold mt-2">Illumination</p></div>
+                            <div data-target="eval" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">4</span><p class="font-semibold mt-2">Evaluation</p></div>
+                            <div data-target="verif" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">5</span><p class="font-semibold mt-2">Verification</p></div>
                         </div>
-                         <div data-target="incub" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50">
-                            <span class="text-4xl">2</span>
-                            <p class="font-semibold mt-2">Incubation</p>
-                        </div>
-                         <div data-target="illum" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50">
-                            <span class="text-4xl">3</span>
-                            <p class="font-semibold mt-2">Illumination</p>
-                        </div>
-                         <div data-target="eval" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50">
-                            <span class="text-4xl">4</span>
-                            <p class="font-semibold mt-2">Evaluation</p>
-                        </div>
-                         <div data-target="verif" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50">
-                            <span class="text-4xl">5</span>
-                            <p class="font-semibold mt-2">Verification</p>
+                        <div id="creative-process-content" class="bg-gray-50 p-6 rounded-lg min-h-[100px]">
+                            <div id="prep" class="creative-content-pane active"><h4 class="font-bold text-lg text-gray-800">Preparation: The Foundation</h4><p class="text-gray-600 mt-1">The research phase. You gather information, conduct brainstorming sessions, and immerse yourself in the problem. This is where you collect the raw materials for your idea.</p></div>
+                            <div id="incub" class="creative-content-pane hidden"><h4 class="font-bold text-lg text-gray-800">Incubation: Let it Simmer</h4><p class="text-gray-600 mt-1">You step away from the problem and let your subconscious mind work. This period of not actively thinking is crucial for your brain to make new, unexpected connections.</p></div>
+                            <div id="illum" class="creative-content-pane hidden"><h4 class="font-bold text-lg text-gray-800">Illumination: The "Aha!" Moment</h4><p class="text-gray-600 mt-1">A new idea or the solution to the problem suddenly emerges into your consciousness. It often feels like a flash of insight.</p></div>
+                            <div id="eval" class="creative-content-pane hidden"><h4 class="font-bold text-lg text-gray-800">Evaluation: Critical Analysis</h4><p class="text-gray-600 mt-1">You critically analyze the idea. Is it strategically sound? Does it meet the objectives? You refine and improve it here, ensuring it's not just new, but also useful.</p></div>
+                            <div id="verif" class="creative-content-pane hidden"><h4 class="font-bold text-lg text-gray-800">Verification: Execution</h4><p class="text-gray-600 mt-1">The execution phase. This is the hard work of bringing the idea to life—writing the copy, designing the layout, and producing the final ad.</p></div>
                         </div>
                     </div>
-                    <div id="creative-process-content" class="bg-gray-50 p-6 rounded-lg">
-                        <div id="prep" class="creative-content-pane active">
-                            <h4 class="font-bold text-lg text-gray-800">Preparation: The Foundation</h4>
-                            <p class="text-gray-600 mt-1">The research phase. You gather information, conduct brainstorming sessions, and immerse yourself in the problem. This is where you collect the raw materials for your idea.</p>
-                        </div>
-                         <div id="incub" class="creative-content-pane hidden">
-                            <h4 class="font-bold text-lg text-gray-800">Incubation: Let it Simmer</h4>
-                            <p class="text-gray-600 mt-1">You step away from the problem and let your subconscious mind work. This period of not actively thinking is crucial for your brain to make new, unexpected connections.</p>
-                        </div>
-                         <div id="illum" class="creative-content-pane hidden">
-                            <h4 class="font-bold text-lg text-gray-800">Illumination: The "Aha!" Moment</h4>
-                            <p class="text-gray-600 mt-1">A new idea or the solution to the problem suddenly emerges into your consciousness. It often feels like a flash of insight.</p>
-                        </div>
-                         <div id="eval" class="creative-content-pane hidden">
-                            <h4 class="font-bold text-lg text-gray-800">Evaluation: Critical Analysis</h4>
-                            <p class="text-gray-600 mt-1">You critically analyze the idea. Is it strategically sound? Does it meet the objectives? You refine and improve it here, ensuring it's not just new, but also useful.</p>
-                        </div>
-                         <div id="verif" class="creative-content-pane hidden">
-                            <h4 class="font-bold text-lg text-gray-800">Verification: Execution</h4>
-                            <p class="text-gray-600 mt-1">The execution phase. This is the hard work of bringing the idea to life—writing the copy, designing the layout, and producing the final ad.</p>
-                        </div>
+                    <div id="creativity-innovation" class="sub-content-pane">
+                        <h3 class="text-xl font-semibold text-teal-700 mb-3">Thinking Outside the Box</h3>
+                        <p>This refers to thinking in a creative, innovative way by looking at a problem from a different perspective. It requires you to first understand the "box" (the status quo and its limitations) and then challenge it. This approach helps to solve problems more effectively, identify overlooked opportunities, and foster a culture of innovation.</p>
+                        <h3 class="text-xl font-semibold text-teal-700 mt-6 mb-3">The Innovator's DNA</h3>
+                        <p>Research has identified five key skills that separate innovators from typical executives:</p>
+                        <ul>
+                            <li><strong>Associating:</strong> Drawing connections between questions, problems, or ideas from unrelated fields.</li>
+                            <li><strong>Questioning:</strong> Posing queries that challenge common wisdom and the status quo.</li>
+                            <li><strong>Observing:</strong> Scrutinizing the behavior of customers, competitors, and others to identify new ways of doing things.</li>
+                            <li><strong>Networking:</strong> Meeting people with different ideas and perspectives to expand your knowledge.</li>
+                            <li><strong>Experimenting:</strong> Constructing interactive experiences and prototypes to see what insights emerge.</li>
+                        </ul>
                     </div>
-                </article>
+                </div>
             </div>
         </section>
 
         <!-- Section 2: Creative Brief -->
         <section id="brief" class="content-section">
-            <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
                 <h2 class="text-3xl font-bold text-gray-800 mb-2">The Strategic Blueprint: The Creative Brief</h2>
-                <p class="text-lg text-gray-600 mb-8">Also known as a Copy Platform, this is the foundational "treasure map" that guides all creative work, ensuring it is strategically sound.</p>
-
-                <article class="mb-10">
-                    <h3 class="text-2xl font-semibold text-teal-700 mb-3">Purpose</h3>
-                    <p class="text-gray-700 leading-relaxed">The brief's purpose is to channel the creative team's efforts toward a solution that serves the client's interests. It's a critical agreement between the agency and client on what the advertising needs to accomplish, preventing misunderstandings and wasted work.</p>
-                </article>
-
-                <article id="accordion-container">
-                    <h3 class="text-2xl font-semibold text-teal-700 mb-4">Key Components</h3>
-                    <div class="space-y-3">
-                        <div class="accordion-item border border-gray-200 rounded-lg">
-                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">
-                                The Ad Problem
-                                <span class="transform transition-transform duration-300">+</span>
-                            </button>
-                            <div class="accordion-content">
-                                <p class="p-4 border-t border-gray-200 text-gray-600">What specific challenge is the advertisement trying to overcome? (e.g., low brand awareness, declining sales, negative perception).</p>
+                <p class="text-lg text-gray-600 mb-6">Understand the purpose, components, and process behind the most important document in any ad campaign.</p>
+                <div class="flex border-b border-gray-200 sub-nav-container">
+                    <button data-target="brief-purpose" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Purpose & Definition</button>
+                    <button data-target="brief-components" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Key Components</button>
+                    <button data-target="brief-process" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Process & Approval</button>
+                </div>
+                 <div class="py-6 prose max-w-none">
+                     <div id="brief-purpose" class="sub-content-pane active">
+                        <h3 class="text-xl font-semibold text-teal-700 mb-3">The "Treasure Map" for Creatives</h3>
+                        <p>A creative brief (also called a Copy Platform, Creative Work Plan, or Copy Strategy) is a short document that provides the creative team with a succinct overview of the most important issues to consider. Its primary purpose is to channel the creative team's efforts toward a solution that will serve the interests of the client. It represents an agreement between the client and the agency on what the advertising campaign is intended to accomplish.</p>
+                     </div>
+                     <div id="brief-components" class="sub-content-pane">
+                         <h3 class="text-xl font-semibold text-teal-700 mb-4">Anatomy of a Creative Brief</h3>
+                         <p>While the exact format can differ between agencies, a strong brief will always contain the following core elements. Use the accordion below to explore them.</p>
+                         <div id="accordion-container" class="mt-4">
+                            <div class="space-y-3">
+                                <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">The Ad Problem<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">What specific challenge is the advertisement trying to overcome? (e.g., low brand awareness, declining sales, negative perception).</p></div></div>
+                                <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">Advertising Objective<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">What is the specific, measurable goal of the campaign? (e.g., increase website traffic by 30%, generate 500 new leads).</p></div></div>
+                                <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">Target Audience<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">A detailed profile of who you are talking to, including demographics (age, gender, income) and psychographics (values, lifestyle, interests).</p></div></div>
+                                <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">Competition<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">Who are the primary competitors, what are their strengths/weaknesses, and what is their current messaging?</p></div></div>
+                                <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">Statement of Benefit / Key Insight<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">The single most important thing to say to the consumer. This insight answers their core question: "What's in it for me?" (W.I.I.F.M.).</p></div></div>
+                                <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">Tone of Voice<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">What personality should the ad have? (e.g., humorous, serious, inspiring, authoritative, friendly).</p></div></div>
                             </div>
-                        </div>
-                        <div class="accordion-item border border-gray-200 rounded-lg">
-                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">
-                                Advertising Objective
-                                <span class="transform transition-transform duration-300">+</span>
-                            </button>
-                            <div class="accordion-content">
-                                <p class="p-4 border-t border-gray-200 text-gray-600">What is the specific, measurable goal of the campaign? (e.g., increase website traffic by 30%, generate 500 new leads).</p>
-                            </div>
-                        </div>
-                         <div class="accordion-item border border-gray-200 rounded-lg">
-                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">
-                                Target Audience
-                                <span class="transform transition-transform duration-300">+</span>
-                            </button>
-                            <div class="accordion-content">
-                                <p class="p-4 border-t border-gray-200 text-gray-600">A detailed profile of who you are talking to, including demographics (age, gender, income) and psychographics (values, lifestyle, interests).</p>
-                            </div>
-                        </div>
-                        <div class="accordion-item border border-gray-200 rounded-lg">
-                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">
-                                Statement of Benefit / Key Insight
-                                <span class="transform transition-transform duration-300">+</span>
-                            </button>
-                            <div class="accordion-content">
-                                <p class="p-4 border-t border-gray-200 text-gray-600">The single most important thing to say to the consumer. This insight answers their core question: "What's in it for me?" (W.I.I.F.M.).</p>
-                            </div>
-                        </div>
-                         <div class="accordion-item border border-gray-200 rounded-lg">
-                            <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">
-                                Tone of Voice
-                                <span class="transform transition-transform duration-300">+</span>
-                            </button>
-                            <div class="accordion-content">
-                                <p class="p-4 border-t border-gray-200 text-gray-600">What personality should the ad have? (e.g., humorous, serious, inspiring, authoritative, friendly).</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                         </div>
+                     </div>
+                     <div id="brief-process" class="sub-content-pane">
+                         <h3 class="text-xl font-semibold text-teal-700 mb-3">From Information to Inspiration</h3>
+                         <p>Creating a brief is a collaborative process. It starts with gathering as much information as possible from the client and about the product. The key steps are:</p>
+                        <ul>
+                            <li><strong>Start With The Client:</strong> Deeply understand their business, goals, and challenges.</li>
+                            <li><strong>Use The Product Or Service:</strong> First-hand experience is invaluable for generating insights.</li>
+                            <li><strong>Organize Your Thoughts:</strong> Structure the gathered information into the key components of the brief.</li>
+                            <li><strong>Get Feedback:</strong> The creative director must review and approve the brief to ensure it's a solid foundation for the creative team.</li>
+                            <li><strong>Get The Client's Approval:</strong> This is crucial. The client must sign off on the brief. This protects the agency later if the client claims the creative work is "not what we wanted."</li>
+                            <li><strong>Present In Person:</strong> A brief should be presented to the creative team in a meeting, not just sent over email. This allows for questions and ensures everyone is aligned.</li>
+                        </ul>
+                     </div>
+                 </div>
             </div>
         </section>
 
         <!-- Section 3: Copywriting -->
         <section id="copywriting" class="content-section">
-            <div class="bg-white p-8 rounded-xl shadow-lg">
+             <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
                 <h2 class="text-3xl font-bold text-gray-800 mb-2">The Language of Persuasion: Copywriting Fundamentals</h2>
-                <p class="text-lg text-gray-600 mb-8">Copywriting is the art and science of writing persuasive messages that get people to take action. This section covers its core frameworks and psychological principles.</p>
-
-                <div class="grid md:grid-cols-2 gap-10">
-                    <article>
-                        <h3 class="text-2xl font-semibold text-teal-700 mb-3">Core Principles</h3>
-                        <div class="space-y-4 text-gray-700">
-                            <div>
-                                <h4 class="font-bold">AIDA Model</h4>
-                                <p>The universal structure for persuasive copy: Grab **Attention**, build **Interest**, create **Desire**, and call to **Action**.</p>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Unique Selling Proposition (USP)</h4>
-                                <p>The one specific benefit that makes your brand stand out from the competition. It must answer the question: "What makes you different?"</p>
-                            </div>
-                            <div>
-                                <h4 class="font-bold">Audience Focus ("You" vs. "We")</h4>
-                                <p>Great copy is never about the company ("we"); it's always about the customer ("you"). It should be conversational and speak their language.</p>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article>
-                         <h3 class="text-2xl font-semibold text-teal-700 mb-4">Maslow's Hierarchy in Advertising</h3>
-                         <div id="maslow-pyramid" class="relative w-full max-w-xs mx-auto mt-6">
+                <p class="text-lg text-gray-600 mb-6">Learn the art and science of writing persuasive copy that drives action, from foundational models to advanced techniques.</p>
+                 <div class="flex border-b border-gray-200 sub-nav-container">
+                    <button data-target="copy-fundamentals" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Core Principles</button>
+                    <button data-target="copy-psychology" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Psychology in Copy</button>
+                    <button data-target="copy-techniques" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Writing Techniques</button>
+                </div>
+                 <div class="py-6 prose max-w-none">
+                    <div id="copy-fundamentals" class="sub-content-pane active">
+                         <h3 class="text-xl font-semibold text-teal-700 mb-3">The Building Blocks of Persuasion</h3>
+                         <p>Copywriting is the skill of strategically delivering words that get people to take some form of action. It's like a salesperson who can reach millions at once.</p>
+                         <ul>
+                            <li><strong>AIDA Model:</strong> The essential framework for all persuasive writing. First, grab **Attention** with a hook. Then, build **Interest** by detailing the problem or situation. Create **Desire** by showing how your product is the perfect solution. Finally, issue a clear call to **Action**.</li>
+                            <li><strong>Unique Selling Proposition (USP):</strong> The one unique benefit that your product offers over the competition. It's the core of your argument and must be meaningful to consumers. It answers the question, "Why should I buy from you?"</li>
+                            <li><strong>Audience Focus:</strong> Always write from the consumer's perspective. Use "you" and "your" instead of "we" and "our." Address their needs and answer their internal question: "What's In It For Me?" (W.I.I.F.M).</li>
+                         </ul>
+                    </div>
+                    <div id="copy-psychology" class="sub-content-pane">
+                        <h3 class="text-xl font-semibold text-teal-700 mb-3">Maslow's Hierarchy of Needs in Marketing</h3>
+                        <p>Smart marketers appeal to a consumer's fundamental needs. Maslow's theory provides a roadmap for understanding these motivations. Click on the pyramid levels to see examples.</p>
+                        <div id="maslow-pyramid" class="relative w-full max-w-xs mx-auto mt-6">
                             <div data-target="maslow-self" class="maslow-level bg-purple-400 w-1/4 mx-auto" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 60px;">Self-Actualization</div>
                             <div data-target="maslow-esteem" class="maslow-level bg-blue-400 w-1/2 mx-auto -mt-10" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 70px;">Esteem</div>
                             <div data-target="maslow-love" class="maslow-level bg-green-400 w-3/4 mx-auto -mt-10" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 80px;">Belonging/Love</div>
@@ -241,64 +223,81 @@
                             <div data-target="maslow-phys" class="maslow-level bg-red-400 w-full mx-auto -mt-10" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 100px;">Physiological</div>
                         </div>
                         <div id="maslow-content" class="mt-4 bg-gray-50 p-4 rounded-lg min-h-[100px]">
-                           <div id="maslow-self" class="maslow-content-pane hidden">
-                                <p>Appeals to achieving one's full potential (e.g., charities, retirement planning).</p>
-                           </div>
-                           <div id="maslow-esteem" class="maslow-content-pane hidden">
-                                <p>Appeals to status and accomplishment (e.g., luxury goods like BMW, Gucci).</p>
-                           </div>
-                           <div id="maslow-love" class="maslow-content-pane hidden">
-                                <p>Appeals to community and connection (e.g., Coca-Cola, Apple).</p>
-                           </div>
-                           <div id="maslow-safety" class="maslow-content-pane hidden">
-                                <p>Appeals to security and protection (e.g., insurance, Volvo cars).</p>
-                           </div>
-                           <div id="maslow-phys" class="maslow-content-pane hidden">
-                                <p>Appeals to basic survival needs (e.g., food, water). Not a common target for most brands.</p>
-                           </div>
-                           <div id="maslow-default" class="maslow-content-pane">
-                                <p class="text-gray-500 text-center">Click a level to see examples.</p>
-                           </div>
+                           <div id="maslow-self" class="maslow-content-pane hidden"><p>Appeals to achieving one's full potential (e.g., charities, retirement planning).</p></div>
+                           <div id="maslow-esteem" class="maslow-content-pane hidden"><p>Appeals to status and accomplishment (e.g., luxury goods like BMW, Gucci).</p></div>
+                           <div id="maslow-love" class="maslow-content-pane hidden"><p>Appeals to community and connection (e.g., Coca-Cola, Apple).</p></div>
+                           <div id="maslow-safety" class="maslow-content-pane hidden"><p>Appeals to security and protection (e.g., insurance, Volvo cars).</p></div>
+                           <div id="maslow-phys" class="maslow-content-pane hidden"><p>Appeals to basic survival needs (e.g., food, water). Not a common target for most brands.</p></div>
+                           <div id="maslow-default" class="maslow-content-pane"><p class="text-gray-500 text-center">Click a level to see examples.</p></div>
                         </div>
-                    </article>
+                    </div>
+                    <div id="copy-techniques" class="sub-content-pane">
+                         <h3 class="text-xl font-semibold text-teal-700 mb-3">Effective Writing Style</h3>
+                         <ul>
+                            <li><strong>Be Succinct:</strong> Use short words, short sentences, and short paragraphs. Every word counts.</li>
+                            <li><strong>Be Specific:</strong> Generalities are boring. Specific details are memorable and credible.</li>
+                            <li><strong>Be Conversational:</strong> Write the way people talk. Use contractions and a natural rhythm.</li>
+                            <li><strong>Sell Benefits, Not Features:</strong> A feature is what a product *is* (e.g., "a 1-inch drill bit"). A benefit is what it *does for the customer* (e.g., "makes a 1-inch hole"). Always lead with the benefit.</li>
+                            <li><strong>Use Active Voice:</strong> "We helped 5,000 customers" is stronger than "5,000 customers were helped by us."</li>
+                            <li><strong>Tell a Story:</strong> Stories are more engaging and emotionally resonant than a list of facts.</li>
+                            <li><strong>Avoid "Adese":</strong> Steer clear of clichés, superlatives, and brag-and-boast copy (e.g., "quality you can trust at a price you can afford"). It's predictable and easy to ignore.</li>
+                         </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Section 4: Media -->
         <section id="media" class="content-section">
-            <div class="bg-white p-8 rounded-xl shadow-lg">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
                 <h2 class="text-3xl font-bold text-gray-800 mb-2">Crafting the Message: Media-Specific Copywriting</h2>
-                <p class="text-lg text-gray-600 mb-8">A great idea must be adapted to the unique strengths and limitations of its medium. Here's how to write for different advertising platforms.</p>
-                
-                <div id="media-tabs-nav" class="flex border-b border-gray-200 mb-6">
-                    <button data-target="print" class="tab-link flex-1 py-3 px-1 text-center font-semibold text-gray-600 hover:bg-gray-100 active">Print</button>
-                    <button data-target="radio" class="tab-link flex-1 py-3 px-1 text-center font-semibold text-gray-600 hover:bg-gray-100">Radio</button>
-                    <button data-target="tv" class="tab-link flex-1 py-3 px-1 text-center font-semibold text-gray-600 hover:bg-gray-100">Television</button>
-                    <button data-target="outdoor" class="tab-link flex-1 py-3 px-1 text-center font-semibold text-gray-600 hover:bg-gray-100">Outdoor</button>
+                <p class="text-lg text-gray-600 mb-6">A great idea must be adapted to the unique strengths and limitations of its medium. Here's how to write for different advertising platforms.</p>
+                <div class="flex flex-wrap border-b border-gray-200 sub-nav-container">
+                    <button data-target="media-print" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Print</button>
+                    <button data-target="media-radio" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Radio</button>
+                    <button data-target="media-tv" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Television</button>
+                    <button data-target="media-outdoor" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Outdoor</button>
                 </div>
-                
-                <div id="media-tabs-content">
-                    <div id="print" class="media-content-pane">
-                        <h3 class="text-2xl font-semibold text-teal-700 mb-3">Print Advertising</h3>
-                        <p class="mb-4">**Display Copy** (headlines, slogans) grabs attention, while **Body Copy** provides details. The **Headline** is the most important element, designed to stop the reader. **Slogans** are long-term brand mottos (Nike's "Just Do It"), while **Taglines** sum up a specific campaign.</p>
-                    </div>
-                    <div id="radio" class="media-content-pane hidden">
-                        <h3 class="text-2xl font-semibold text-teal-700 mb-3">Radio Advertising</h3>
-                        <p class="mb-4">Radio relies on the **"Theater of the Mind,"** using audio to create powerful images. The copywriter's tools are **Voice, Music, and Sound Effects (SFX)**. Scripts must be timed perfectly (~60-70 words for 30s) and the brand name mentioned often.</p>
-                    </div>
-                    <div id="tv" class="media-content-pane hidden">
-                        <h3 class="text-2xl font-semibold text-teal-700 mb-3">Television Advertising</h3>
-                        <p class="mb-2">TV combines audio and visuals. The goal is synergy, where words and pictures work together seamlessly. Common formats include **Presenter, Testimonial, Demonstration, Slice of Life,** and **Lifestyle**.</p>
-                        <p>**The Storyboard** is a visual script made of panels. Its two main purposes are 1) to get client approval before production and 2) to serve as a guide for the film crew during the shoot.</p>
-                    </div>
-                    <div id="outdoor" class="media-content-pane hidden">
-                        <h3 class="text-2xl font-semibold text-teal-700 mb-3">Outdoor Advertising</h3>
-                        <p class="mb-2">The oldest form of advertising. It requires a simple, bold concept that can be understood in seconds.</p>
-                        <p class="mb-2"><strong class="text-gray-800">Advantages:</strong> High coverage (24/7) and geographic flexibility.</p>
-                        <p><strong class="text-gray-800">Disadvantages:</strong> The message is **fleeting** (seen briefly) and it's very **difficult to measure** effectiveness.</p>
-                    </div>
-                </div>
+                <div class="py-6 prose max-w-none">
+                     <div id="media-print" class="sub-content-pane active">
+                         <h3 class="text-xl font-semibold text-teal-700 mb-3">Print Advertising</h3>
+                         <p>In print, copy is divided into two categories:</p>
+                         <ul>
+                            <li><strong>Display Copy:</strong> All elements a reader sees in their initial scan. Its purpose is to grab attention. This includes the **Headline** (the most crucial element), **Subheads**, **Call-outs** (labels pointing to visuals), **Taglines** (wraps up an ad's idea), and **Slogans** (a brand's long-term motto).</li>
+                            <li><strong>Body Copy:</strong> The main text of the ad, designed to be read and absorbed. It explains the idea, provides details, and persuades the reader.</li>
+                         </ul>
+                     </div>
+                     <div id="media-radio" class="sub-content-pane">
+                         <h3 class="text-xl font-semibold text-teal-700 mb-3">Radio Advertising</h3>
+                         <ul>
+                            <li><strong>Theater of the Mind:</strong> Radio's unique power. Without visuals, the copywriter must use audio to create powerful images and stories in the listener's imagination.</li>
+                            <li><strong>Audio Tools:</strong> The three tools are **Voice** (casting, dialogue, tone), **Music** (to create mood or a memorable jingle), and **Sound Effects (SFX)** (to establish a setting and action).</li>
+                            <li><strong>Scripting:</strong> Radio scripts use a two-column format. They must be timed perfectly (e.g., 60-70 words for a 30-second spot). The advertiser's name should be mentioned early and often for retention.</li>
+                         </ul>
+                     </div>
+                     <div id="media-tv" class="sub-content-pane">
+                         <h3 class="text-xl font-semibold text-teal-700 mb-3">Television Advertising</h3>
+                         <p>TV is the most complex medium, requiring seamless synergy between video and audio. The visuals should carry most of the weight.</p>
+                         <h4 class="font-semibold mt-4 mb-2">Common Commercial Formats:</h4>
+                         <ul>
+                            <li><strong>Presenter:</strong> A celebrity, expert, or character presents the product.</li>
+                            <li><strong>Testimonial:</strong> A satisfied user tells their story, providing credibility.</li>
+                            <li><strong>Demonstration:</strong> Shows the product in use, proving its effectiveness.</li>
+                            <li><strong>Slice of Life:</strong> A mini-drama presenting a real-life problem that the product solves.</li>
+                            <li><strong>Lifestyle:</strong> Focuses on the user and their identity rather than product features.</li>
+                         </ul>
+                         <h4 class="font-semibold mt-4 mb-2">The Storyboard</h4>
+                         <p>A storyboard is a visual script, a series of frames that pre-visualizes the ad. Its two main purposes are: <strong>1) To get client/management approval</strong> before spending money on production, and <strong>2) To serve as a guide for the film crew</strong> during the shoot.</p>
+                     </div>
+                     <div id="media-outdoor" class="sub-content-pane">
+                        <h3 class="text-xl font-semibold text-teal-700 mb-3">Outdoor Advertising</h3>
+                        <p>This includes billboards, posters, and transit ads. The concept must be simple, bold, and instantly understandable.</p>
+                        <ul>
+                           <li><strong>Advantages:</strong> It has wide coverage (accessible 24/7), high frequency, and great geographic flexibility.</li>
+                           <li><strong>Disadvantages:</strong> The message is **fleeting** (viewers pass by quickly), and audience measurement is extremely difficult. It can also be seen as "visual pollution."</li>
+                        </ul>
+                     </div>
+                 </div>
             </div>
         </section>
 
@@ -325,99 +324,103 @@
                 }
             });
 
-            function setupInteractiveTabs(navSelector, contentSelector, contentPaneClass, activeClass) {
-                 const tabNav = document.querySelector(navSelector);
-                 if(!tabNav) return;
-                 const contentPanes = document.querySelectorAll(contentPaneClass);
+            function setupSubNavTabs() {
+                const containers = document.querySelectorAll('.sub-nav-container');
+                containers.forEach(container => {
+                    const contentArea = container.nextElementSibling;
+                    container.addEventListener('click', e => {
+                        if (e.target.tagName === 'BUTTON') {
+                            const targetId = e.target.dataset.target;
+                            
+                            container.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                            e.target.classList.add('active');
 
-                 tabNav.addEventListener('click', (e) => {
-                    const targetButton = e.target.closest('button');
-                    if(targetButton) {
-                        const targetId = targetButton.dataset.target;
-                        
-                        tabNav.querySelectorAll('button').forEach(btn => btn.classList.remove(activeClass));
-                        targetButton.classList.add(activeClass);
-
-                        contentPanes.forEach(pane => {
-                            pane.classList.add('hidden');
-                            if(pane.id === targetId) {
-                                pane.classList.remove('hidden');
-                            }
-                        });
-                    }
-                 });
-            }
-            
-            setupInteractiveTabs('#media-tabs-nav', '#media-tabs-content', '.media-content-pane', 'active');
-            
-            const creativeProcessNav = document.getElementById('creative-process-nav');
-            const creativeContentPanes = document.querySelectorAll('.creative-content-pane');
-
-            creativeProcessNav.addEventListener('click', (e) => {
-                const stage = e.target.closest('.creative-stage');
-                if (stage) {
-                    const targetId = stage.dataset.target;
-
-                    creativeProcessNav.querySelectorAll('.creative-stage').forEach(s => s.classList.remove('active'));
-                    stage.classList.add('active');
-
-                    creativeContentPanes.forEach(pane => {
-                        pane.classList.remove('active');
-                        pane.classList.add('hidden');
-                        if (pane.id === targetId) {
-                           pane.classList.add('active');
-                           pane.classList.remove('hidden');
+                            contentArea.querySelectorAll('.sub-content-pane').forEach(pane => {
+                                pane.classList.remove('active');
+                                if (pane.id === targetId) {
+                                    pane.classList.add('active');
+                                }
+                            });
                         }
                     });
-                }
-            });
+                });
+            }
             
-            const accordionContainer = document.getElementById('accordion-container');
-            if (accordionContainer) {
-                accordionContainer.addEventListener('click', e => {
-                    const header = e.target.closest('.accordion-header');
-                    if (header) {
-                        const content = header.nextElementSibling;
-                        const icon = header.querySelector('span');
-                        
-                        header.parentElement.classList.toggle('open');
-                        content.classList.toggle('open');
-                        icon.classList.toggle('rotate-45');
+            setupSubNavTabs();
+            
+            const creativeProcessNav = document.getElementById('creative-process-nav');
+            const creativeContentPanes = document.querySelectorAll('#creative-process-content .creative-content-pane');
+            
+            if (creativeProcessNav) {
+                creativeProcessNav.addEventListener('click', (e) => {
+                    const stage = e.target.closest('.creative-stage');
+                    if (stage) {
+                        const targetId = stage.dataset.target;
 
-                        document.querySelectorAll('.accordion-item.open').forEach(item => {
-                            if (item !== header.parentElement) {
-                                item.classList.remove('open');
-                                item.querySelector('.accordion-content').classList.remove('open');
-                                item.querySelector('span').classList.remove('rotate-45');
+                        creativeProcessNav.querySelectorAll('.creative-stage').forEach(s => s.classList.remove('active'));
+                        stage.classList.add('active');
+
+                        creativeContentPanes.forEach(pane => {
+                            pane.classList.remove('active', 'hidden');
+                            pane.classList.add('hidden');
+                            if (pane.id === targetId) {
+                               pane.classList.add('active');
+                               pane.classList.remove('hidden');
                             }
                         });
                     }
                 });
             }
+            
+            const accordionContainers = document.querySelectorAll('#accordion-container');
+            accordionContainers.forEach(container => {
+                container.addEventListener('click', e => {
+                    const header = e.target.closest('.accordion-header');
+                    if (header) {
+                        const content = header.nextElementSibling;
+                        const icon = header.querySelector('span');
+                        
+                        const currentlyOpen = content.classList.contains('open');
 
-            const maslowPyramid = document.getElementById('maslow-pyramid');
-            const maslowContentPanes = document.querySelectorAll('.maslow-content-pane');
+                        container.querySelectorAll('.accordion-item.open').forEach(item => {
+                            item.querySelector('.accordion-content').classList.remove('open');
+                            item.querySelector('span').classList.remove('rotate-45');
+                        });
 
-            maslowPyramid.addEventListener('click', e => {
-                 const level = e.target.closest('.maslow-level');
-                 if (level) {
-                     const targetId = level.dataset.target;
-
-                     maslowPyramid.querySelectorAll('.maslow-level').forEach(l => l.classList.remove('active'));
-                     level.classList.add('active');
-
-                     maslowContentPanes.forEach(pane => {
-                         pane.style.display = 'none';
-                         if (pane.id === targetId) {
-                             pane.style.display = 'block';
-                         }
-                     });
-                 }
+                        if (!currentlyOpen) {
+                            content.classList.add('open');
+                            icon.classList.add('rotate-45');
+                        }
+                    }
+                });
             });
-            maslowContentPanes.forEach(pane => {
-                if(!pane.id.includes('default')) pane.style.display = 'none';
+
+            const maslowPyramids = document.querySelectorAll('#maslow-pyramid');
+            maslowPyramids.forEach(pyramid => {
+                const contentArea = pyramid.nextElementSibling;
+                pyramid.addEventListener('click', e => {
+                     const level = e.target.closest('.maslow-level');
+                     if (level) {
+                         const targetId = level.dataset.target;
+
+                         pyramid.querySelectorAll('.maslow-level').forEach(l => l.classList.remove('active'));
+                         level.classList.add('active');
+
+                         contentArea.querySelectorAll('.maslow-content-pane').forEach(pane => {
+                             pane.style.display = 'none';
+                             if (pane.id === targetId) {
+                                 pane.style.display = 'block';
+                             }
+                         });
+                     }
+                });
+                contentArea.querySelectorAll('.maslow-content-pane').forEach(pane => {
+                    if(!pane.id.includes('default')) pane.style.display = 'none';
+                });
             });
         });
     </script>
 </body>
 </html>
+
+
