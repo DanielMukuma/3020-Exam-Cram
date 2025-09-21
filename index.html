@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Harmony (Warm Neutrals with Teal Accent) -->
-    <!-- Application Structure Plan: The SPA structure is expanded into a full study guide. The top-level navigation (Creativity, Brief, Copywriting, Media) remains for broad topic selection. Each main section now contains its own sub-navigation tab system. This nested structure allows for a deep dive into specific concepts (e.g., "The 5 Stages" or "TV Ad Formats") without overwhelming the user. This hierarchical organization transforms the initial cram sheet into a comprehensive, self-contained learning tool, prioritizing depth and clarity. -->
-    <!-- Visualization & Content Choices: The application now uses nested tabs to structure detailed notes from the source PDFs. Interactive elements like the clickable 5-stage process, accordions for brief components, and the Maslow's pyramid are retained but placed within this more granular structure. This enhances usability by breaking down large volumes of text into manageable, topic-specific chunks, making study sessions more focused and effective. -->
+    <!-- Application Structure Plan: The SPA is restructured into a comprehensive digital textbook. The top-level navigation is updated to four main pillars: Creativity, The Campaign, Copywriting, and Outdoor Advertising. This creates a more logical information hierarchy. Each pillar contains its own sub-navigation with tabs for deep dives into theory, examples, and a dedicated glossary, as requested. This modular, hierarchical structure allows the user to study a broad topic or drill down into a specific concept, making it a powerful, non-linear learning tool. -->
+    <!-- Visualization & Content Choices: The application uses nested tabs to organize a large volume of information from multiple source documents into digestible chunks. Key concepts like "Slogan vs. Tagline" are presented in a clear, comparative table inspired by the provided image. The radio script examples are formatted for readability. The principles of billboard design are presented as a checklist. This structure and choice of interactive elements transform dense notes into an engaging and highly organized study experience. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -32,10 +32,6 @@
         .content-section.active, .sub-content-pane.active {
             display: block;
         }
-        .tab-link.active {
-            background-color: #0D9488;
-            color: white;
-        }
         .sub-nav-link {
             transition: all 0.2s ease-in-out;
         }
@@ -50,31 +46,50 @@
             transition: max-height 0.5s ease-out;
         }
         .accordion-content.open {
-            max-height: 500px;
+            max-height: 1000px;
         }
-        .creative-stage, .maslow-level {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .creative-stage.active, .maslow-level.active {
-            background-color: #CCFBF1; /* Light Teal */
-            border-color: #0D9488;
-        }
-        .maslow-level {
-            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-            height: 80px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 8px;
+        .prose h3 {
+            font-size: 1.5rem;
             font-weight: 600;
+            color: #0f766e;
+            margin-bottom: 0.75rem;
+        }
+        .prose h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
         }
         .prose ul {
             list-style-position: inside;
+            margin-left: 1rem;
         }
         .prose li {
-            margin-left: 1rem;
             list-style-type: disc;
+            margin-bottom: 0.5rem;
+        }
+        .prose p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .prose strong {
+            color: #047857;
+        }
+        .script-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .script-table th, .script-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        .script-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -83,12 +98,12 @@
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-10 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <h1 class="text-2xl font-bold text-teal-700">Advertising 3020 Study Guide</h1>
-                <nav id="main-nav" class="hidden md:flex space-x-8">
+                <h1 class="text-xl md:text-2xl font-bold text-teal-700">Advertising 3020 Study Guide</h1>
+                <nav id="main-nav" class="hidden md:flex space-x-4 lg:space-x-8">
                     <a data-target="creativity" class="nav-link active font-semibold border-b-2 border-transparent pb-1">Creativity</a>
-                    <a data-target="brief" class="nav-link font-semibold border-b-2 border-transparent pb-1">Creative Brief</a>
+                    <a data-target="campaign" class="nav-link font-semibold border-b-2 border-transparent pb-1">The Campaign</a>
                     <a data-target="copywriting" class="nav-link font-semibold border-b-2 border-transparent pb-1">Copywriting</a>
-                    <a data-target="media" class="nav-link font-semibold border-b-2 border-transparent pb-1">Media</a>
+                    <a data-target="outdoor" class="nav-link font-semibold border-b-2 border-transparent pb-1">Outdoor & Billboard</a>
                 </nav>
             </div>
         </div>
@@ -99,73 +114,63 @@
         <!-- Section 1: Creativity -->
         <section id="creativity" class="content-section active">
             <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">The Core of an Idea: Creativity in Advertising</h2>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Creativity in Advertising</h2>
                 <p class="text-lg text-gray-600 mb-6">Explore the definition of creativity, the process for generating ideas, and the principles of innovative thinking.</p>
-                <div class="flex border-b border-gray-200 sub-nav-container">
-                    <button data-target="creativity-def" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Defining Creativity</button>
-                    <button data-target="creativity-process" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">The Creative Process</button>
-                    <button data-target="creativity-innovation" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Innovation & Thinking</button>
+                <div class="flex flex-wrap border-b border-gray-200 sub-nav-container">
+                    <button data-target="creativity-def" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Introduction to Creativity</button>
+                    <button data-target="creativity-process" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">The Creative Process</button>
+                    <button data-target="creativity-glossary" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Key Terms</button>
                 </div>
                 <div class="py-6 prose max-w-none">
                     <div id="creativity-def" class="sub-content-pane active">
-                        <h3 class="text-xl font-semibold text-teal-700 mb-3">What is Creativity?</h3>
+                        <h3>What is Creativity?</h3>
                         <p>Creativity is the act of turning new and imaginative ideas into reality. It is characterized by the ability to perceive the world in new ways, to find hidden patterns, and to make connections between seemingly unrelated phenomena. Critically for advertising, a product is creative when it is both **(a) novel** and **(b) appropriate**. A novel product is original and not predictable. An appropriate product is useful and serves the client's objective.</p>
                         <p>Creativity involves two processes: thinking, then producing. If you have ideas but don't act on them, you are imaginative but not creative. Everyone has "everyday creativity," and it is a skill that can be developed, not an innate talent.</p>
+                        <h4>Thinking Outside the Box</h4>
+                        <p>This refers to thinking in a creative, innovative way by looking at a problem from a different perspective. It requires you to first understand the "box" (the status quo and its limitations) and then challenge it. This approach helps to solve problems more effectively, identify overlooked opportunities, and foster a culture of innovation.</p>
                     </div>
                     <div id="creativity-process" class="sub-content-pane">
-                         <h3 class="text-xl font-semibold text-teal-700 mb-4">The 5-Stage Creative Process</h3>
-                         <p class="mb-4">This is the evolution of an idea into its final form, first articulated by Graham Wallas. Click on a stage to see the details.</p>
-                         <div id="creative-process-nav" class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
-                            <div data-target="prep" class="creative-stage active text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">1</span><p class="font-semibold mt-2">Preparation</p></div>
-                            <div data-target="incub" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">2</span><p class="font-semibold mt-2">Incubation</p></div>
-                            <div data-target="illum" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">3</span><p class="font-semibold mt-2">Illumination</p></div>
-                            <div data-target="eval" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">4</span><p class="font-semibold mt-2">Evaluation</p></div>
-                            <div data-target="verif" class="creative-stage text-center p-4 border-2 border-gray-200 rounded-lg hover:border-teal-600 hover:bg-teal-50"><span class="text-4xl">5</span><p class="font-semibold mt-2">Verification</p></div>
-                        </div>
-                        <div id="creative-process-content" class="bg-gray-50 p-6 rounded-lg min-h-[100px]">
-                            <div id="prep" class="creative-content-pane active"><h4 class="font-bold text-lg text-gray-800">Preparation: The Foundation</h4><p class="text-gray-600 mt-1">The research phase. You gather information, conduct brainstorming sessions, and immerse yourself in the problem. This is where you collect the raw materials for your idea.</p></div>
-                            <div id="incub" class="creative-content-pane hidden"><h4 class="font-bold text-lg text-gray-800">Incubation: Let it Simmer</h4><p class="text-gray-600 mt-1">You step away from the problem and let your subconscious mind work. This period of not actively thinking is crucial for your brain to make new, unexpected connections.</p></div>
-                            <div id="illum" class="creative-content-pane hidden"><h4 class="font-bold text-lg text-gray-800">Illumination: The "Aha!" Moment</h4><p class="text-gray-600 mt-1">A new idea or the solution to the problem suddenly emerges into your consciousness. It often feels like a flash of insight.</p></div>
-                            <div id="eval" class="creative-content-pane hidden"><h4 class="font-bold text-lg text-gray-800">Evaluation: Critical Analysis</h4><p class="text-gray-600 mt-1">You critically analyze the idea. Is it strategically sound? Does it meet the objectives? You refine and improve it here, ensuring it's not just new, but also useful.</p></div>
-                            <div id="verif" class="creative-content-pane hidden"><h4 class="font-bold text-lg text-gray-800">Verification: Execution</h4><p class="text-gray-600 mt-1">The execution phase. This is the hard work of bringing the idea to life—writing the copy, designing the layout, and producing the final ad.</p></div>
-                        </div>
-                    </div>
-                    <div id="creativity-innovation" class="sub-content-pane">
-                        <h3 class="text-xl font-semibold text-teal-700 mb-3">Thinking Outside the Box</h3>
-                        <p>This refers to thinking in a creative, innovative way by looking at a problem from a different perspective. It requires you to first understand the "box" (the status quo and its limitations) and then challenge it. This approach helps to solve problems more effectively, identify overlooked opportunities, and foster a culture of innovation.</p>
-                        <h3 class="text-xl font-semibold text-teal-700 mt-6 mb-3">The Innovator's DNA</h3>
-                        <p>Research has identified five key skills that separate innovators from typical executives:</p>
+                         <h3>The 5-Stage Creative Process</h3>
+                         <p>This is the evolution of an idea into its final form, first articulated by Graham Wallas. It provides a structured journey for developing creative concepts.</p>
                         <ul>
-                            <li><strong>Associating:</strong> Drawing connections between questions, problems, or ideas from unrelated fields.</li>
-                            <li><strong>Questioning:</strong> Posing queries that challenge common wisdom and the status quo.</li>
-                            <li><strong>Observing:</strong> Scrutinizing the behavior of customers, competitors, and others to identify new ways of doing things.</li>
-                            <li><strong>Networking:</strong> Meeting people with different ideas and perspectives to expand your knowledge.</li>
-                            <li><strong>Experimenting:</strong> Constructing interactive experiences and prototypes to see what insights emerge.</li>
+                            <li><strong>1. Preparation:</strong> The research phase. You gather information, conduct brainstorming sessions, and immerse yourself in the problem. This is where you collect the raw materials for your idea.</li>
+                            <li><strong>2. Incubation:</strong> You step away from the problem and let your subconscious mind work. This period of not actively thinking is crucial for your brain to make new, unexpected connections.</li>
+                            <li><strong>3. Illumination:</strong> The "aha!" or "eureka!" moment. A new idea or the solution to the problem suddenly emerges into your consciousness. It often feels like a flash of insight.</li>
+                            <li><strong>4. Evaluation:</strong> You critically analyze the idea. Is it strategically sound? Does it meet the objectives? You refine and improve it here, ensuring it's not just new, but also useful.</li>
+                            <li><strong>5. Verification:</strong> The execution phase. This is the hard work of bringing the idea to life—writing the copy, designing the layout, and producing the final ad.</li>
+                        </ul>
+                    </div>
+                    <div id="creativity-glossary" class="sub-content-pane">
+                        <h3>Glossary of Creativity Terms</h3>
+                        <ul>
+                            <li><strong>Creativity:</strong> The act of turning new and imaginative ideas into a reality that is both novel and appropriate.</li>
+                            <li><strong>Innovation:</strong> The implementation of a new or significantly improved product, service, or process that creates value.</li>
+                            <li><strong>Thinking Outside the Box:</strong> Approaching problems with an open mind and unconventional thinking.</li>
+                            <li><strong>The Innovator's DNA:</strong> Five key skills of innovators: Associating, Questioning, Observing, Networking, and Experimenting.</li>
+                            <li><strong>Divergent Thinking:</strong> The process of exploring many possible solutions to a problem. Often used in the Preparation stage.</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Section 2: Creative Brief -->
-        <section id="brief" class="content-section">
+        
+        <!-- Section 2: The Campaign -->
+        <section id="campaign" class="content-section">
             <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">The Strategic Blueprint: The Creative Brief</h2>
-                <p class="text-lg text-gray-600 mb-6">Understand the purpose, components, and process behind the most important document in any ad campaign.</p>
-                <div class="flex border-b border-gray-200 sub-nav-container">
-                    <button data-target="brief-purpose" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Purpose & Definition</button>
-                    <button data-target="brief-components" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Key Components</button>
-                    <button data-target="brief-process" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Process & Approval</button>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">The Advertising Campaign</h2>
+                <p class="text-lg text-gray-600 mb-6">From strategic planning with the Creative Brief to understanding brand messaging with Slogans and Taglines.</p>
+                <div class="flex flex-wrap border-b border-gray-200 sub-nav-container">
+                    <button data-target="campaign-brief" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">The Creative Brief</button>
+                    <button data-target="campaign-examples" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Brief Examples</button>
+                    <button data-target="campaign-slogans" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Slogans vs. Taglines</button>
                 </div>
-                 <div class="py-6 prose max-w-none">
-                     <div id="brief-purpose" class="sub-content-pane active">
-                        <h3 class="text-xl font-semibold text-teal-700 mb-3">The "Treasure Map" for Creatives</h3>
-                        <p>A creative brief (also called a Copy Platform, Creative Work Plan, or Copy Strategy) is a short document that provides the creative team with a succinct overview of the most important issues to consider. Its primary purpose is to channel the creative team's efforts toward a solution that will serve the interests of the client. It represents an agreement between the client and the agency on what the advertising campaign is intended to accomplish.</p>
-                     </div>
-                     <div id="brief-components" class="sub-content-pane">
-                         <h3 class="text-xl font-semibold text-teal-700 mb-4">Anatomy of a Creative Brief</h3>
-                         <p>While the exact format can differ between agencies, a strong brief will always contain the following core elements. Use the accordion below to explore them.</p>
-                         <div id="accordion-container" class="mt-4">
+                <div class="py-6 prose max-w-none">
+                    <div id="campaign-brief" class="sub-content-pane active">
+                        <h3>The "Treasure Map" for Creatives</h3>
+                        <p>A creative brief (also called a Copy Platform or Creative Strategy) is a short document that provides the creative team with a succinct overview of the most important issues. Its primary purpose is to channel the creative team's efforts toward a solution that will serve the interests of the client. It represents a formal agreement between the client and the agency.</p>
+                        <h4>Anatomy of a Creative Brief</h4>
+                        <p>While formats vary, a strong brief will always contain these core elements:</p>
+                        <div id="accordion-container-brief" class="mt-4 text-base">
                             <div class="space-y-3">
                                 <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">The Ad Problem<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">What specific challenge is the advertisement trying to overcome? (e.g., low brand awareness, declining sales, negative perception).</p></div></div>
                                 <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">Advertising Objective<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">What is the specific, measurable goal of the campaign? (e.g., increase website traffic by 30%, generate 500 new leads).</p></div></div>
@@ -175,129 +180,179 @@
                                 <div class="accordion-item border border-gray-200 rounded-lg"><button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 font-semibold flex justify-between items-center">Tone of Voice<span class="transform transition-transform duration-300">+</span></button><div class="accordion-content"><p class="p-4 border-t border-gray-200 text-gray-600">What personality should the ad have? (e.g., humorous, serious, inspiring, authoritative, friendly).</p></div></div>
                             </div>
                          </div>
+                    </div>
+                     <div id="campaign-examples" class="sub-content-pane">
+                         <h3>Creative Brief Examples</h3>
+                         <h4>Nike Air Force 1s</h4>
+                         <p><strong>Problem:</strong> Maintain relevance for a classic shoe model in a competitive market. <strong>Objective:</strong> Expand the age demographic and associate the brand with concepts like "courage" and "victory", while highlighting sustainability efforts. <strong>Target Audience:</strong> Young men and women (18-30), athletic, stylish, and increasingly environmentally conscious. <strong>Key Insight:</strong> The Air Force 1 is a timeless classic that combines style, durability, and comfort.</p>
+                         <h4>Burt's Bees Lip Balm</h4>
+                         <p><strong>Problem:</strong> Product is more expensive and less known than competitors like Chapstick. <strong>Objective:</strong> Promote the product's healthy, natural qualities to a specific demographic. <strong>Target Audience:</strong> Environmentally conscious women (12-45) and men (18-30) who prefer organic products. <strong>Key Insight:</strong> Burt's Bees is made with natural ingredients you can feel good about using.</p>
+                         <h4>Red Bull</h4>
+                         <p><strong>Problem:</strong> Red Bull is seen as a "youthful drink." <strong>Objective:</strong> Expand the market to older adults reaching their "midlife crisis" phase. <strong>Target Audience:</strong> Middle-aged men and women who feel they lack motivation and fear growing older. <strong>Key Insight:</strong> Red Bull can give you the focus and energy to tackle your deepest desires. ("Get your balls back.")</p>
                      </div>
-                     <div id="brief-process" class="sub-content-pane">
-                         <h3 class="text-xl font-semibold text-teal-700 mb-3">From Information to Inspiration</h3>
-                         <p>Creating a brief is a collaborative process. It starts with gathering as much information as possible from the client and about the product. The key steps are:</p>
-                        <ul>
-                            <li><strong>Start With The Client:</strong> Deeply understand their business, goals, and challenges.</li>
-                            <li><strong>Use The Product Or Service:</strong> First-hand experience is invaluable for generating insights.</li>
-                            <li><strong>Organize Your Thoughts:</strong> Structure the gathered information into the key components of the brief.</li>
-                            <li><strong>Get Feedback:</strong> The creative director must review and approve the brief to ensure it's a solid foundation for the creative team.</li>
-                            <li><strong>Get The Client's Approval:</strong> This is crucial. The client must sign off on the brief. This protects the agency later if the client claims the creative work is "not what we wanted."</li>
-                            <li><strong>Present In Person:</strong> A brief should be presented to the creative team in a meeting, not just sent over email. This allows for questions and ensures everyone is aligned.</li>
-                        </ul>
-                     </div>
-                 </div>
+                    <div id="campaign-slogans" class="sub-content-pane">
+                        <h3>Slogans vs. Taglines: What's the Difference?</h3>
+                        <p>Although often used interchangeably, slogans and taglines have distinct roles in advertising.</p>
+                        <div class="mt-4 overflow-x-auto">
+                            <table class="w-full text-sm text-left text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 rounded-l-lg">Feature</th>
+                                        <th scope="col" class="px-6 py-3">Tagline</th>
+                                        <th scope="col" class="px-6 py-3 rounded-r-lg">Slogan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Definition</th><td class="px-6 py-4">A long-term phrase reflecting brand's core values.</td><td class="px-6 py-4">A short-term phrase for a specific campaign.</td></tr>
+                                    <tr class="bg-gray-50"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Usage</th><td class="px-6 py-4">Used consistently across all brand messaging.</td><td class="px-6 py-4">Used temporarily for specific marketing efforts.</td></tr>
+                                    <tr class="bg-white"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Longevity</th><td class="px-6 py-4">Long-lasting; remains the same to build recognition.</td><td class="px-6 py-4">Short-lived; changes with new campaigns.</td></tr>
+                                    <tr class="bg-gray-50"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Objective</th><td class="px-6 py-4">Builds emotional connection and brand identity.</td><td class="px-6 py-4">Captures attention and drives immediate action.</td></tr>
+                                    <tr class="bg-white"><th scope="row" class="px-6 py-4 font-medium text-gray-900">Example</th><td class="px-6 py-4">Nike: "Just Do It."</td><td class="px-6 py-4">Kit Kat (during a specific promotion): "Break time, anytime."</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Section 3: Copywriting -->
         <section id="copywriting" class="content-section">
-             <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">The Language of Persuasion: Copywriting Fundamentals</h2>
-                <p class="text-lg text-gray-600 mb-6">Learn the art and science of writing persuasive copy that drives action, from foundational models to advanced techniques.</p>
-                 <div class="flex border-b border-gray-200 sub-nav-container">
-                    <button data-target="copy-fundamentals" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Core Principles</button>
-                    <button data-target="copy-psychology" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Psychology in Copy</button>
-                    <button data-target="copy-techniques" class="sub-nav-link flex-1 py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Writing Techniques</button>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Copywriting: The Language of Advertising</h2>
+                <p class="text-lg text-gray-600 mb-6">Learn the art and science of writing persuasive copy that drives action, tailored for different media.</p>
+                 <div class="flex flex-wrap border-b border-gray-200 sub-nav-container">
+                    <button data-target="copy-intro" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Intro & Print Copy</button>
+                    <button data-target="copy-radio" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Radio Copy</button>
+                    <button data-target="copy-tv" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">TV Copy</button>
+                    <button data-target="copy-glossary" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Key Terms</button>
                 </div>
-                 <div class="py-6 prose max-w-none">
-                    <div id="copy-fundamentals" class="sub-content-pane active">
-                         <h3 class="text-xl font-semibold text-teal-700 mb-3">The Building Blocks of Persuasion</h3>
-                         <p>Copywriting is the skill of strategically delivering words that get people to take some form of action. It's like a salesperson who can reach millions at once.</p>
-                         <ul>
-                            <li><strong>AIDA Model:</strong> The essential framework for all persuasive writing. First, grab **Attention** with a hook. Then, build **Interest** by detailing the problem or situation. Create **Desire** by showing how your product is the perfect solution. Finally, issue a clear call to **Action**.</li>
-                            <li><strong>Unique Selling Proposition (USP):</strong> The one unique benefit that your product offers over the competition. It's the core of your argument and must be meaningful to consumers. It answers the question, "Why should I buy from you?"</li>
-                            <li><strong>Audience Focus:</strong> Always write from the consumer's perspective. Use "you" and "your" instead of "we" and "our." Address their needs and answer their internal question: "What's In It For Me?" (W.I.I.F.M).</li>
-                         </ul>
+                <div class="py-6 prose max-w-none">
+                    <div id="copy-intro" class="sub-content-pane active">
+                        <h3>Fundamentals of Copywriting for Print</h3>
+                        <p>Print copy is divided into two categories:</p>
+                        <ul>
+                           <li><strong>Display Copy:</strong> All elements a reader sees in their initial scan. Its purpose is to grab attention. This includes the **Headline** (the most crucial element), **Subheads**, **Call-outs** (labels pointing to visuals), **Taglines** (wraps up an ad's idea), and **Slogans** (a brand's long-term motto).</li>
+                           <li><strong>Body Copy:</strong> The main text of the ad, designed to be read and absorbed. It explains the idea, provides details, and persuades the reader.</li>
+                        </ul>
+                        <h4>Key Writing Techniques</h4>
+                        <ul>
+                           <li><strong>Sell Benefits, Not Features:</strong> A feature is what a product *is* (e.g., "a 1-inch drill bit"). A benefit is what it *does for the customer* (e.g., "makes a 1-inch hole"). Always lead with the benefit.</li>
+                           <li><strong>Avoid "Adese":</strong> Steer clear of clichés and brag-and-boast copy (e.g., "quality you can trust at a price you can afford"). It's predictable and easy to ignore.</li>
+                        </ul>
                     </div>
-                    <div id="copy-psychology" class="sub-content-pane">
-                        <h3 class="text-xl font-semibold text-teal-700 mb-3">Maslow's Hierarchy of Needs in Marketing</h3>
-                        <p>Smart marketers appeal to a consumer's fundamental needs. Maslow's theory provides a roadmap for understanding these motivations. Click on the pyramid levels to see examples.</p>
-                        <div id="maslow-pyramid" class="relative w-full max-w-xs mx-auto mt-6">
-                            <div data-target="maslow-self" class="maslow-level bg-purple-400 w-1/4 mx-auto" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 60px;">Self-Actualization</div>
-                            <div data-target="maslow-esteem" class="maslow-level bg-blue-400 w-1/2 mx-auto -mt-10" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 70px;">Esteem</div>
-                            <div data-target="maslow-love" class="maslow-level bg-green-400 w-3/4 mx-auto -mt-10" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 80px;">Belonging/Love</div>
-                            <div data-target="maslow-safety" class="maslow-level bg-yellow-400 w-11/12 mx-auto -mt-10" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 90px;">Safety</div>
-                            <div data-target="maslow-phys" class="maslow-level bg-red-400 w-full mx-auto -mt-10" style="clip-path: polygon(50% 0%, 100% 100%, 0% 100%); height: 100px;">Physiological</div>
-                        </div>
-                        <div id="maslow-content" class="mt-4 bg-gray-50 p-4 rounded-lg min-h-[100px]">
-                           <div id="maslow-self" class="maslow-content-pane hidden"><p>Appeals to achieving one's full potential (e.g., charities, retirement planning).</p></div>
-                           <div id="maslow-esteem" class="maslow-content-pane hidden"><p>Appeals to status and accomplishment (e.g., luxury goods like BMW, Gucci).</p></div>
-                           <div id="maslow-love" class="maslow-content-pane hidden"><p>Appeals to community and connection (e.g., Coca-Cola, Apple).</p></div>
-                           <div id="maslow-safety" class="maslow-content-pane hidden"><p>Appeals to security and protection (e.g., insurance, Volvo cars).</p></div>
-                           <div id="maslow-phys" class="maslow-content-pane hidden"><p>Appeals to basic survival needs (e.g., food, water). Not a common target for most brands.</p></div>
-                           <div id="maslow-default" class="maslow-content-pane"><p class="text-gray-500 text-center">Click a level to see examples.</p></div>
-                        </div>
+                    <div id="copy-radio" class="sub-content-pane">
+                        <h3>Copywriting for Radio</h3>
+                        <h4>Theater of the Mind</h4>
+                        <p>Radio's unique power. Without visuals, the copywriter must use audio to create powerful images and stories in the listener's imagination. Research shows using imagery in radio leads to higher attention and more positive attitudes toward the ad.</p>
+                        <h4>The Audio Toolkit</h4>
+                        <ul>
+                           <li><strong>Voice:</strong> The most important element. It conveys the personality of the speaker (e.g., a child, an expert, an announcer).</li>
+                           <li><strong>Music:</strong> Creates mood, establishes setting, and makes messages memorable through jingles.</li>
+                           <li><strong>Sound Effects (SFX):</strong> Cues the setting and action (e.g., waves crashing, a phone ringing).</li>
+                        </ul>
+                        <h4>Radio Script Sample: "Taste Test"</h4>
+                        <table class="script-table">
+                            <thead><tr><th>Source</th><th>Audio</th></tr></thead>
+                            <tbody>
+                                <tr><td>SFX</td><td>Electronic can opener</td></tr>
+                                <tr><td>YOUNG GIRL</td><td>Today, we're going to be doing a simple taste test... Savory Chunks brand dog food versus the leading brand.</td></tr>
+                                <tr><td>SFX</td><td>Dog food being poured into a bowl</td></tr>
+                                <tr><td>YOUNG GIRL</td><td>Mmmm! Not bad. A bit of an after taste, but not bad.</td></tr>
+                                <tr><td>ANNOUNCER</td><td>Things can get pretty ugly when you're bored after school.</td></tr>
+                                <tr><td>SFX</td><td>Girl burps</td></tr>
+                                <tr><td>ANNOUNCER</td><td>In an after school program you can find something way better to do... Check out afterschoolscene.com.</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div id="copy-techniques" class="sub-content-pane">
-                         <h3 class="text-xl font-semibold text-teal-700 mb-3">Effective Writing Style</h3>
-                         <ul>
-                            <li><strong>Be Succinct:</strong> Use short words, short sentences, and short paragraphs. Every word counts.</li>
-                            <li><strong>Be Specific:</strong> Generalities are boring. Specific details are memorable and credible.</li>
-                            <li><strong>Be Conversational:</strong> Write the way people talk. Use contractions and a natural rhythm.</li>
-                            <li><strong>Sell Benefits, Not Features:</strong> A feature is what a product *is* (e.g., "a 1-inch drill bit"). A benefit is what it *does for the customer* (e.g., "makes a 1-inch hole"). Always lead with the benefit.</li>
-                            <li><strong>Use Active Voice:</strong> "We helped 5,000 customers" is stronger than "5,000 customers were helped by us."</li>
-                            <li><strong>Tell a Story:</strong> Stories are more engaging and emotionally resonant than a list of facts.</li>
-                            <li><strong>Avoid "Adese":</strong> Steer clear of clichés, superlatives, and brag-and-boast copy (e.g., "quality you can trust at a price you can afford"). It's predictable and easy to ignore.</li>
-                         </ul>
+                    <div id="copy-tv" class="sub-content-pane">
+                        <h3>Copywriting for Television</h3>
+                        <p>TV is the most complex medium, requiring seamless synergy between video and audio. The visuals should carry most of the weight, conveying the Big Idea through action, emotion, and storytelling.</p>
+                        <h4>Common Commercial Formats</h4>
+                        <ul>
+                           <li><strong>Presenter:</strong> A celebrity, expert, or character presents the product.</li>
+                           <li><strong>Testimonial:</strong> A satisfied user tells their story, providing credibility.</li>
+                           <li><strong>Demonstration:</strong> Shows the product in use, proving its effectiveness (e.g., before-and-after).</li>
+                           <li><strong>Slice of Life:</strong> A mini-drama presenting a real-life problem that the product solves.</li>
+                           <li><strong>Lifestyle:</strong> Focuses on the user and their identity rather than product features.</li>
+                           <li><strong>Animation:</strong> Uses cartoons or graphics, effective for complex messages or reaching children.</li>
+                        </ul>
+                        <h4>The Storyboard</h4>
+                        <p>A storyboard is a visual script, a series of frames that pre-visualizes the ad. Its two main purposes are: <strong>1) To get client/management approval</strong> before spending money on production, and <strong>2) To serve as a guide for the film crew</strong> during the shoot.</p>
+                    </div>
+                    <div id="copy-glossary" class="sub-content-pane">
+                        <h3>Glossary of Copywriting Terms</h3>
+                        <ul>
+                            <li><strong>Copy:</strong> The text of an ad or the words spoken in a commercial.</li>
+                            <li><strong>AIDA Model:</strong> Attention, Interest, Desire, Action. A framework for persuasive copy.</li>
+                            <li><strong>USP (Unique Selling Proposition):</strong> The unique benefit that enables a product to stand out from competitors.</li>
+                            <li><strong>Headline:</strong> The most prominent piece of display copy, designed to grab attention.</li>
+                            <li><strong>Body Copy:</strong> The main text of an ad that provides details and explanation.</li>
+                            <li><strong>Call to Action (CTA):</strong> An instruction to the audience designed to provoke an immediate response (e.g., "Call now," "Learn more").</li>
+                            <li><strong>Voice-Over (VO):</strong> An off-screen announcer's voice in a TV or radio commercial.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Section 4: Media -->
-        <section id="media" class="content-section">
+        
+        <!-- Section 4: Outdoor & Billboard -->
+        <section id="outdoor" class="content-section">
             <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">Crafting the Message: Media-Specific Copywriting</h2>
-                <p class="text-lg text-gray-600 mb-6">A great idea must be adapted to the unique strengths and limitations of its medium. Here's how to write for different advertising platforms.</p>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Outdoor & Billboard Advertising</h2>
+                <p class="text-lg text-gray-600 mb-6">Master the principles of the oldest advertising medium, from broad outdoor strategies to specific billboard design rules.</p>
                 <div class="flex flex-wrap border-b border-gray-200 sub-nav-container">
-                    <button data-target="media-print" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Print</button>
-                    <button data-target="media-radio" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Radio</button>
-                    <button data-target="media-tv" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Television</button>
-                    <button data-target="media-outdoor" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Outdoor</button>
+                    <button data-target="outdoor-intro" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100 active">Outdoor Advertising</button>
+                    <button data-target="outdoor-billboard" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Billboard Design</button>
+                    <button data-target="outdoor-glossary" class="sub-nav-link flex-grow py-3 px-2 text-center font-semibold text-gray-600 border-b-2 border-transparent hover:bg-gray-100">Key Terms</button>
                 </div>
                 <div class="py-6 prose max-w-none">
-                     <div id="media-print" class="sub-content-pane active">
-                         <h3 class="text-xl font-semibold text-teal-700 mb-3">Print Advertising</h3>
-                         <p>In print, copy is divided into two categories:</p>
-                         <ul>
-                            <li><strong>Display Copy:</strong> All elements a reader sees in their initial scan. Its purpose is to grab attention. This includes the **Headline** (the most crucial element), **Subheads**, **Call-outs** (labels pointing to visuals), **Taglines** (wraps up an ad's idea), and **Slogans** (a brand's long-term motto).</li>
-                            <li><strong>Body Copy:</strong> The main text of the ad, designed to be read and absorbed. It explains the idea, provides details, and persuades the reader.</li>
-                         </ul>
-                     </div>
-                     <div id="media-radio" class="sub-content-pane">
-                         <h3 class="text-xl font-semibold text-teal-700 mb-3">Radio Advertising</h3>
-                         <ul>
-                            <li><strong>Theater of the Mind:</strong> Radio's unique power. Without visuals, the copywriter must use audio to create powerful images and stories in the listener's imagination.</li>
-                            <li><strong>Audio Tools:</strong> The three tools are **Voice** (casting, dialogue, tone), **Music** (to create mood or a memorable jingle), and **Sound Effects (SFX)** (to establish a setting and action).</li>
-                            <li><strong>Scripting:</strong> Radio scripts use a two-column format. They must be timed perfectly (e.g., 60-70 words for a 30-second spot). The advertiser's name should be mentioned early and often for retention.</li>
-                         </ul>
-                     </div>
-                     <div id="media-tv" class="sub-content-pane">
-                         <h3 class="text-xl font-semibold text-teal-700 mb-3">Television Advertising</h3>
-                         <p>TV is the most complex medium, requiring seamless synergy between video and audio. The visuals should carry most of the weight.</p>
-                         <h4 class="font-semibold mt-4 mb-2">Common Commercial Formats:</h4>
-                         <ul>
-                            <li><strong>Presenter:</strong> A celebrity, expert, or character presents the product.</li>
-                            <li><strong>Testimonial:</strong> A satisfied user tells their story, providing credibility.</li>
-                            <li><strong>Demonstration:</strong> Shows the product in use, proving its effectiveness.</li>
-                            <li><strong>Slice of Life:</strong> A mini-drama presenting a real-life problem that the product solves.</li>
-                            <li><strong>Lifestyle:</strong> Focuses on the user and their identity rather than product features.</li>
-                         </ul>
-                         <h4 class="font-semibold mt-4 mb-2">The Storyboard</h4>
-                         <p>A storyboard is a visual script, a series of frames that pre-visualizes the ad. Its two main purposes are: <strong>1) To get client/management approval</strong> before spending money on production, and <strong>2) To serve as a guide for the film crew</strong> during the shoot.</p>
-                     </div>
-                     <div id="media-outdoor" class="sub-content-pane">
-                        <h3 class="text-xl font-semibold text-teal-700 mb-3">Outdoor Advertising</h3>
-                        <p>This includes billboards, posters, and transit ads. The concept must be simple, bold, and instantly understandable.</p>
+                    <div id="outdoor-intro" class="sub-content-pane active">
+                        <h3>The Oldest Form of Advertising</h3>
+                        <p>Outdoor advertising consists of any ad displayed out of doors, such as posters, painted signs, and light signs. It is a widespread medium with high coverage, making it ideal for mass-appeal products.</p>
+                        <h4>Types of Outdoor Advertising</h4>
                         <ul>
-                           <li><strong>Advantages:</strong> It has wide coverage (accessible 24/7), high frequency, and great geographic flexibility.</li>
-                           <li><strong>Disadvantages:</strong> The message is **fleeting** (viewers pass by quickly), and audience measurement is extremely difficult. It can also be seen as "visual pollution."</li>
+                            <li><strong>Posters/Advertising Boards:</strong> The most common form, exhibited on hoardings.</li>
+                            <li><strong>Vehicle Advertising:</strong> Moving ads placed on or inside buses, taxis, and trains.</li>
+                            <li><strong>Electric & Neon Signs:</strong> Attractive illuminated signs, common in cities.</li>
+                            <li><strong>Sky Advertising:</strong> Modern forms like skywriting or large balloons.</li>
+                            <li><strong>Street Furniture:</strong> Ads on bus shelters, benches, etc.</li>
                         </ul>
-                     </div>
-                 </div>
+                        <h4>Advantages & Disadvantages</h4>
+                        <ul>
+                            <li><strong>Advantages:</strong> High coverage and frequency (24/7 accessibility), geographic flexibility, long life, and effective for building brand awareness.</li>
+                            <li><strong>Disadvantages:</strong> Message must be **fleeting** (brief and crisp), audience measurement is very difficult, and it can be perceived as "visual pollution".</li>
+                        </ul>
+                    </div>
+                    <div id="outdoor-billboard" class="sub-content-pane">
+                        <h3>Best Practices for Billboard Design</h3>
+                        <p>With an average dwell time of only 4 seconds, billboard design must be impactful and instantly understandable.</p>
+                        <h4>The Rules of Three and Seven</h4>
+                        <ul>
+                            <li><strong>The 3-Second Rule:</strong> A viewer must be able to read and understand your entire message in 3 seconds or less.</li>
+                            <li><strong>The 7-Word Rule:</strong> The optimal length of text for a billboard is seven words or fewer. People process visuals 60,000 times faster than text.</li>
+                        </ul>
+                        <h4>Key Design Elements</h4>
+                        <ul>
+                            <li><strong>One Big Idea:</strong> Focus on a single, memorable message. Don't be boring.</li>
+                            <li><strong>One Strong Image:</strong> Use one impactful, high-resolution image. Clutter is the enemy.</li>
+                            <li><strong>Clear Branding:</strong> The logo should be large and clear, taking up significant space for brand recall.</li>
+                            <li><strong>High Contrast & Bold Fonts:</strong> Use contrasting colors and legible, bold fonts to ensure maximum readability from a distance.</li>
+                            <li><strong>Avoid Direct Response:</strong> Do not rely on viewers writing down a phone number or website. The goal is brand recall, not immediate action. A simple Google search should be enough for interested viewers to find you.</li>
+                        </ul>
+                    </div>
+                    <div id="outdoor-glossary" class="sub-content-pane">
+                        <h3>Glossary of Outdoor Terms</h3>
+                        <ul>
+                            <li><strong>Billboard:</strong> A large outdoor advertising structure, typically found in high-traffic areas.</li>
+                            <li><strong>Outdoor/Mural Advertising:</strong> The oldest form of advertising; any ad displayed out of doors.</li>
+                            <li><strong>Dwell Time:</strong> The average amount of time a person is likely to see an ad. For billboards, this is extremely short (e.g., 4 seconds).</li>
+                            <li><strong>Fleeting Message:</strong> A key characteristic of outdoor ads; the message must be understood very quickly as the audience is in motion.</li>
+                            <li><strong>Street Furniture:</strong> A type of outdoor advertising that includes bus shelters, kiosks, and public benches.</li>
+                            <li><strong>Digital Billboard:</strong> An electronic display that can rotate through multiple advertisements.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -348,43 +403,19 @@
             
             setupSubNavTabs();
             
-            const creativeProcessNav = document.getElementById('creative-process-nav');
-            const creativeContentPanes = document.querySelectorAll('#creative-process-content .creative-content-pane');
-            
-            if (creativeProcessNav) {
-                creativeProcessNav.addEventListener('click', (e) => {
-                    const stage = e.target.closest('.creative-stage');
-                    if (stage) {
-                        const targetId = stage.dataset.target;
-
-                        creativeProcessNav.querySelectorAll('.creative-stage').forEach(s => s.classList.remove('active'));
-                        stage.classList.add('active');
-
-                        creativeContentPanes.forEach(pane => {
-                            pane.classList.remove('active', 'hidden');
-                            pane.classList.add('hidden');
-                            if (pane.id === targetId) {
-                               pane.classList.add('active');
-                               pane.classList.remove('hidden');
-                            }
-                        });
-                    }
-                });
-            }
-            
-            const accordionContainers = document.querySelectorAll('#accordion-container');
+            const accordionContainers = document.querySelectorAll('[id^="accordion-container"]');
             accordionContainers.forEach(container => {
                 container.addEventListener('click', e => {
                     const header = e.target.closest('.accordion-header');
                     if (header) {
                         const content = header.nextElementSibling;
                         const icon = header.querySelector('span');
-                        
                         const currentlyOpen = content.classList.contains('open');
 
-                        container.querySelectorAll('.accordion-item.open').forEach(item => {
-                            item.querySelector('.accordion-content').classList.remove('open');
-                            item.querySelector('span').classList.remove('rotate-45');
+                        // Close all open accordions within this container
+                        container.querySelectorAll('.accordion-content.open').forEach(openContent => {
+                            openContent.classList.remove('open');
+                            openContent.previousElementSibling.querySelector('span').classList.remove('rotate-45');
                         });
 
                         if (!currentlyOpen) {
@@ -394,33 +425,8 @@
                     }
                 });
             });
-
-            const maslowPyramids = document.querySelectorAll('#maslow-pyramid');
-            maslowPyramids.forEach(pyramid => {
-                const contentArea = pyramid.nextElementSibling;
-                pyramid.addEventListener('click', e => {
-                     const level = e.target.closest('.maslow-level');
-                     if (level) {
-                         const targetId = level.dataset.target;
-
-                         pyramid.querySelectorAll('.maslow-level').forEach(l => l.classList.remove('active'));
-                         level.classList.add('active');
-
-                         contentArea.querySelectorAll('.maslow-content-pane').forEach(pane => {
-                             pane.style.display = 'none';
-                             if (pane.id === targetId) {
-                                 pane.style.display = 'block';
-                             }
-                         });
-                     }
-                });
-                contentArea.querySelectorAll('.maslow-content-pane').forEach(pane => {
-                    if(!pane.id.includes('default')) pane.style.display = 'none';
-                });
-            });
         });
     </script>
 </body>
 </html>
-
 
